@@ -19,7 +19,7 @@ namespace YandexDisk
     /// \date 17/03/2017
     class Client
     {
-	/// \include examples/class.cpp
+	/// \include examples/take_token.cpp
     public:
 
         Client(string token);
