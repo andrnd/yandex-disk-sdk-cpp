@@ -131,6 +131,43 @@ namespace yadisk
 		auto info = json::parse(response_body);
 		return info;
 	}
+	
+	auto Client::download(string public_key, fs::path to, url::path file)-> json {
+
+		CURL* curl = curl_easy_init();
+		if (!curl) return json();
+
+		url::params_t url_params;
+		url_params["public_key"] = quote(public_key.string(), curl);
+		url_params["path"] = quote(to.string(), curl);
+		url_params["file"] = quote(file.string(), curl)
+		
+		std::string url = api_url + "/public/resource/downloads" + "?" + url_params.string();
+
+		struct curl_slist *header_list = nullptr;
+		std::string auth_header = "public_key= " + public_key;
+		header_list = curl_slist_append(header_list, auth_header.c_str());
+		
+		stringstream response;
+		// set URL for download
+		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(curl, CURLOPT_READDATA, &response);
+		curl_easy_setopt(curl, CURLOPT_READFUNCTION, write<stringstream>);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_list);
+
+		auto response_code = curl_easy_perform(curl);
+
+		curl_slist_free_all(header_list);
+		curl_easy_cleanup(curl);
+
+		if (response_code != CURLE_OK) 
+			return json();
+
+		auto response_data = json::parse(response);
+		return response_data;
+	}
 }
 
 class curl_environment {
