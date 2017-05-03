@@ -1,6 +1,4 @@
 #include <curl/curl.h>
-#include <curl.h>
-#include curl.h
 #include <url/params.hpp>
 #include <yadisk/client.hpp>
 #include <boost/algorithm/string/join.hpp>
