@@ -1,5 +1,6 @@
 #include <curl/curl.h>
-
+#include <curl.h>
+#include curl.h
 #include <url/params.hpp>
 #include <yadisk/client.hpp>
 #include <boost/algorithm/string/join.hpp>
@@ -138,9 +139,9 @@ namespace yadisk
 		if (!curl) return json();
 
 		url::params_t url_params;
-		url_params["public_key"] = quote(public_key.string(), curl);
+		url_params["public_key"] = quote(public_key, curl);
 		url_params["path"] = quote(to.string(), curl);
-		url_params["file"] = quote(file.string(), curl)
+		url_params["file"] = quote(file.string(), curl);
 		
 		std::string url = api_url + "/public/resource/downloads" + "?" + url_params.string();
 
