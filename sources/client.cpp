@@ -131,7 +131,7 @@ namespace yadisk
 		return info;
 	}
 	
-	auto Client::download(url::public_key public_key, url::path path)-> json {
+	auto Client::download(url::path public_key, url::path path)-> json {
 
 		CURL* curl = curl_easy_init();
 		if (!curl) return json();
