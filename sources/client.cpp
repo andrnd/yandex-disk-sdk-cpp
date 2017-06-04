@@ -137,7 +137,7 @@ namespace yadisk
 		if (!curl) return json();
 
 		url::params_t url_params;
-		url_params["public_key"] = quote(path.string(), curl);
+		url_params["public_key"] = quote(public_key.string(), curl);
 		url_params["path"] = quote(path.string(), curl);
 	
 		std::string url = api_url + "/public/resource/downloads" + "?" + url_params.string();
