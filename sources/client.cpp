@@ -131,16 +131,15 @@ namespace yadisk
 		return info;
 	}
 	
-	auto Client::download_from_disk(url::path public_key, url::path path)-> json {
+	auto Client::download(string public_key, fs::path to, url::path file)-> json {
 
 		CURL* curl = curl_easy_init();
 		if (!curl) return json();
 
 		url::params_t url_params;
-		url_params["public_key"] = quote(public_key.string(), curl);
-		url_params["path"] = quote(path.string(), curl);
+		url_params["file"] = quote(file.string(), curl);
 	
-		std::string url = api_url + "/public/resource/downloads" + "?" + url_params.string();
+		std::string url = api_url + "/public/resource/downloads" + "?" + public_key + url_params.string();
 
 		stringstream response;
 		// set URL for download
